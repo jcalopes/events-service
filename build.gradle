@@ -1,0 +1,115 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.6.7"
+    id "com.diffplug.spotless" version "6.11.0"
+    id "pt.com.hugo-dias.git-versioner" version "1.0.8"
+}
+
+version = "0.1"
+group = "com.deeperconnections"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.graphql:micronaut-graphql")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.postgresql:postgresql")
+
+    testImplementation("org.assertj:assertj-core")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:testcontainers")
+    implementation("io.micronaut:micronaut-validation")
+}
+
+
+application {
+    mainClass.set("com.deeperconnections.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.deeperconnections.*")
+    }
+}
+
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        palantirJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+versioner {
+    startFrom {
+        major = 0
+        minor = 0
+        patch = 1
+    }
+
+    pattern {
+        pattern = "%M.%m.%p(-%b-%h)"
+    }
+
+    git {
+        authentication {
+            https {
+                username = project.findProperty("GIT_PROJECT_USER")
+                password = project.findProperty("GIT_PROJECT_TOKEN")
+            }
+        }
+    }
+}
+
+versioner.apply()
+
+docker {
+    name "${project.name}"
+    tag 'local', "${project.name}"
+    tag 'localVersion', "${project.name}:${project.version}"
+    tag 'emea_latest', "registry.k8s.prod.toolops-infra.bmw-fleet.net/connected-fleet-solution/cfs-b4f:latest"
+    tag 'emea_version', "registry.k8s.prod.toolops-infra.bmw-fleet.net/connected-fleet-solution/cfs-b4f:${project.version}"
+    dockerfile file('Dockerfile')
+    buildArgs([DEPENDENCY: "dependency", APPCLASS: 'com.deeperconnections.Application.java'])
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName.set('events-service-app')
+            buildArgs.add('--verbose')
+        }
+    }
+}
+compileJava.dependsOn 'spotlessApply'
+
+
+
+

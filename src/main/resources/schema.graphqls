@@ -1,0 +1,21 @@
+type Query {
+    events: [Event!]!
+    eventByLocal(local: String): [Event!]!
+}
+
+type Event {
+    id: ID
+    name: String
+    description: String
+    local: String
+    cost: Float
+    createdAt: String
+    active: Boolean
+}
+
+type Mutation {
+    createEvent(name:String,description:String,local:String,cost: Float): Event
+}
+
+
+

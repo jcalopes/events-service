@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: events
+  server:
+    port: 8080
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/events
+    username: admin
+    password: MyPassword#
+    driver-class-name: org.postgresql.Driver
+    db-type: postgres
+    dialect: POSTGRES
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+netty:
+  default:
+    allocator:
+      max-order: 3
+flyway:
+  datasources:
+    default:
+      enabled: true
+      sensitive: false
