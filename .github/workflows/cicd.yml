@@ -12,7 +12,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Build
-        run: CI=true ./gradlew assemble
+        run: chmod -x ./gradlew;CI=TRUE ./gradlew assemble
 
 
 
