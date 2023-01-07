@@ -6,7 +6,7 @@ RUN addgroup -S micronaut && adduser -S micronaut -G micronaut
 USER micronaut:micronaut
 
 VOLUME /tmp
-ARG VERSION=version
+ARG VERSION=latest
 ENV VERSION=${VERSION}
 
 COPY build/libs/*-all.jar .
