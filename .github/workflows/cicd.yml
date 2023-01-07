@@ -2,7 +2,7 @@ name: Event-service CI-CD
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   build-project:
     runs-on: ubuntu-latest
