@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  Build-test:
+  Build-Test:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
           retention-days: 1
   push_to_registry:
     name: Push Docker Image to Docker Hub
-    needs: build
+    needs: Build-Test
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
