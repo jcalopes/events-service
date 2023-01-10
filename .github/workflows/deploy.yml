@@ -1,5 +1,8 @@
 name: Event-service CI-CD
-on: [push]
+on:
+  push:
+    branches:
+      - master
 jobs:
   Build-Test:
     name: Build and Test
@@ -54,5 +57,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
 
