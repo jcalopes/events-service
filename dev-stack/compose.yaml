@@ -19,7 +19,7 @@ services:
 
   events-service:
     container_name: events-service
-    image: lopesdev/events-service:v0.0.5
+    image: lopesdev/events-service:${TAG}
     restart: always
     ports:
       - 8080:8080
