@@ -7,7 +7,7 @@ USER micronaut:micronaut
 
 VOLUME /tmp
 
-COPY build/libs/*-all.jar .
+COPY *-all.jar .
 COPY class-data .
 EXPOSE 8080
 # ENTRYPOINT java --enable-preview -XX:SharedArchiveFile=class-data -jar events-all.jar
