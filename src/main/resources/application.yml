@@ -5,9 +5,9 @@ micronaut:
     port: 8080
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/events
-    username: admin
-    password: MyPassword#
+    url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_NAME:events}
+    username: ${DB_USERNAME:admin}
+    password: ${DB_PASSWORD:MyPassword#}
     driver-class-name: org.postgresql.Driver
     db-type: postgres
     dialect: POSTGRES
