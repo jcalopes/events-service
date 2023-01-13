@@ -60,6 +60,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.tag_version.outputs.new_tag }}
+          tags: lopesdev/events-service:${{ steps.tag_version.outputs.new_tag }}
           labels: ${{ steps.meta.outputs.labels }}
 
