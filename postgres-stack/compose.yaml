@@ -1,5 +1,6 @@
 services:
-  db:
+  postgres:
+    container_name: postgres-db
     image: postgres
     restart: always
     environment:
@@ -8,8 +9,23 @@ services:
       POSTGRES_USER: admin
     ports:
       - 5432:5432
+
   adminer:
+    container_name: adminer
     image: adminer
     restart: always
     ports:
       - 8081:8080
+
+  events-service:
+    container_name: events-service
+    image: lopesdev/events-service:v0.0.5
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      DATASOURCES_URL: jdbc:postgresql://postgres:5432/events
+      DATASOURCES_USERNAME: admin
+      DATASOURCES_PASSWORD: MyPassword#
+    links:
+      - postgres
