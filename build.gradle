@@ -4,7 +4,6 @@ plugins {
     id 'java'
 }
 
-version = "0.1.0"
 group = "com.deeperconnections"
 
 repositories {
